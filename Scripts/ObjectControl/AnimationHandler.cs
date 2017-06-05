@@ -13,35 +13,37 @@ public class AnimationHandler{
     private Animator m_animator;
     private Transform m_character;
     private Quaternion m_characterTargetRot;
+    private MovementControl m_movementControl;
+    private AnimationState currentState;
 
     public AnimationHandler(Animator animator, Transform character)
     {
         m_animator = animator;
         m_character = character;
-        m_characterTargetRot = character.localRotation;
+        m_movementControl = character.GetComponentInChildren<MovementControl>();
+        currentState = new IdelState();
     }
 
     public void handle()
     {
-        if(InputListener.left)
+        m_characterTargetRot = m_character.localRotation;
+        currentState.handle(this, m_animator, m_movementControl);
+        Rotate();
+    }
+
+    public void Rotate()
+    {
+        if(!InputListener.up)
         {
             float yRot = InputListener.HorizontalInput;
             m_characterTargetRot *= Quaternion.Euler(0f, yRot, 0f);
             m_character.localRotation = m_characterTargetRot;
-            Logger.log(m_character.localRotation.ToString());
         }
     }
 
-
-
-    public void Walk()
+    public void setState(AnimationState state)
     {
-        m_animator.SetFloat("Speed", 0.5f);
-    }
-
-    public void Stop()
-    {
-        m_animator.SetFloat("Speed", 0.0f);
+        currentState = state;
     }
 }
 

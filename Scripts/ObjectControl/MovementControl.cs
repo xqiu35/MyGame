@@ -6,7 +6,10 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class MovementControl : MonoBehaviour
 {
-    private float walkSpeed = 3f;
+    public float walkSpeed = 5f;
+    public float runSPeed = 10f;
+
+    private float speed;
     private Vector3 moveDirection;
 
     private Animator animator;
@@ -21,7 +24,7 @@ public class MovementControl : MonoBehaviour
         animator = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
         movementHandler = new MovementHandler();
-        animationHandler = new AnimationHandler(animator,transform);
+        animationHandler = new AnimationHandler(animator, transform);
     }
 
     // Update is called once per frame
@@ -35,11 +38,21 @@ public class MovementControl : MonoBehaviour
     private void FixedUpdate()
     {
         animationHandler.handle();
-        //movementHandler.handle(gameObject, moveDirection, walkSpeed);
+        movementHandler.handle(gameObject, moveDirection, speed);
     }
 
-    public void setSpeed(float speed)
+    public void UseWlakSpeed()
     {
-        walkSpeed = speed;
+        speed = walkSpeed;
+    }
+
+    public void UseRunSpeed()
+    {
+        speed = runSPeed;
+    }
+
+    public void StopMoving()
+    {
+        speed = 0;
     }
 }

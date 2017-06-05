@@ -30,18 +30,17 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         public void LookRotation(Transform character, Transform camera)
         {
+            m_CharacterTargetRot = character.localRotation;
+            m_CameraTargetRot = camera.localRotation;
 
             float yRot = InputListener.mouseX * XSensitivity;
             float xRot = InputListener.mouseY * YSensitivity;
 
             if(CameraControl.viewMode == CameraControl.ViewModes.DEFAULT)
             {
-                xRot = 0;
-                if(!InputListener.left)
-                {
-                    m_CharacterTargetRot *= Quaternion.Euler(0f, yRot, 0f);
-                    m_CameraTargetRot *= Quaternion.Euler(-xRot, 0f, 0f);
-                }
+
+                m_CharacterTargetRot *= Quaternion.Euler(0f, yRot, 0f);
+                m_CameraTargetRot *= Quaternion.Euler(0f, 0f, 0f);
             }
 
             if(clampVerticalRotation)
@@ -56,11 +55,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             else
             {
-                if (!InputListener.left)
-                {
-                    character.localRotation = m_CharacterTargetRot;
-                    camera.localRotation = m_CameraTargetRot;
-                }
+                character.localRotation = m_CharacterTargetRot;
+                camera.localRotation = m_CameraTargetRot;
             }
 
             UpdateCursorLock();
