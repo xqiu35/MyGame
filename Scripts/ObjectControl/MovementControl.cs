@@ -7,7 +7,7 @@ using UnityEngine;
 public class MovementControl : MonoBehaviour
 {
     public float walkSpeed = 5f;
-    public float runSPeed = 10f;
+    public float runSpeed = 10f;
 
     private float speed;
     private Vector3 moveDirection;
@@ -30,9 +30,6 @@ public class MovementControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        InputListener.listenHorizontalInput();
-        InputListener.listenVertialInput();
-        InputListener.listenJumpInput();
     }
 
     private void FixedUpdate()
@@ -48,7 +45,7 @@ public class MovementControl : MonoBehaviour
 
     public void UseRunSpeed()
     {
-        speed = runSPeed;
+        speed = runSpeed;
     }
 
     public void StopMoving()

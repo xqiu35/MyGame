@@ -10,14 +10,16 @@ public class MovementHandler
 
         if (controller.isGrounded)
         {
-            moveDirection = new Vector3(InputListener.HorizontalInput, 0, InputListener.VertialInput);
-            moveDirection = obj.transform.TransformDirection(moveDirection);
-            moveDirection *= moveSpeed;
+            //Jump
         }
         else
         {
-            moveDirection += Physics.gravity * Time.fixedDeltaTime;
+            //moveDirection += Physics.gravity * Time.fixedDeltaTime;
         }
+
+        moveDirection = new Vector3(InputListener.HorizontalInput, 0, InputListener.VertialInput);
+        moveDirection = obj.transform.TransformDirection(moveDirection);
+        moveDirection *= moveSpeed;
 
         controller.Move(moveDirection * Time.fixedDeltaTime);
     }

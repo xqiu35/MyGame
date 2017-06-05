@@ -26,7 +26,6 @@ public class CameraControl : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        InputListener.listenMouseXY();
         mouseLook.LookRotation(character, camera.transform);
     }
 

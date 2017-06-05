@@ -32,6 +32,18 @@ public class InputListener : MonoBehaviour {
         }
     }
 
+    void Update()
+    {
+        listenHorizontalInput();
+        listenVertialInput();
+        listenJumpInput();
+        listenMouseXY();
+        listenLeft();
+        listenRight();
+        listenUp();
+        listenDown();
+    }
+
     public static void listenMouseX()
     {
         mouseX = CrossPlatformInputManager.GetAxis("Mouse X");
@@ -51,15 +63,11 @@ public class InputListener : MonoBehaviour {
     public static void listenHorizontalInput()
     {
         HorizontalInput = CrossPlatformInputManager.GetAxis("Horizontal");
-        left = HorizontalInput < 0 ? true : false;
-        right = HorizontalInput > 0 ? true : false;
     }
 
     public static void listenVertialInput()
     {
         VertialInput = CrossPlatformInputManager.GetAxis("Vertical");
-        up = VertialInput > 0 ? true : false;
-        down = VertialInput < 0 ? true : false;
     }
 
     public static void listenJumpInput()
@@ -77,4 +85,23 @@ public class InputListener : MonoBehaviour {
         return CrossPlatformInputManager.GetButton(key);
     }
 
+    public static void listenUp()
+    {
+        up = listenKey("Up");
+    }
+
+    public static void listenDown()
+    {
+        down = listenKey("Down");
+    }
+
+    public static void listenLeft()
+    {
+        left = listenKey("Left");
+    }
+
+    public static void listenRight()
+    {
+        right = listenKey("Right");
+    }
 }

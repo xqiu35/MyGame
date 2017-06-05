@@ -320,6 +320,11 @@ public class RightRunState : AnimationState
             {
                 return;
             }
+            else if (InputListener.up && InputListener.left && InputListener.right)
+            {
+                SetLeftRun(animator);
+                handler.setState(AnimationState.leftRunState);
+            }
             else if (InputListener.up && InputListener.left)
             {
                 SetLeftRun(animator);
