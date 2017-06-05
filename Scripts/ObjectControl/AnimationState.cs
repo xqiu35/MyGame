@@ -114,23 +114,25 @@ public class IdelState : AnimationState
 {
     public override void handle(AnimationHandler handler, Animator animator, MovementControl control)
     {
-        Logger.log("idel");
+        if(animator.GetCurrentAnimatorStateInfo(0).IsName("Idel"))
+        {
+            Logger.log("idel");
 
-        if(InputListener.up && InputListener.left)
-        {
-            SetLeftWalk(animator);
-            handler.setState(AnimationState.leftWalkState);
-        }
-        else if(InputListener.up && InputListener.right)
-        {
-            SetRightWalk(animator);
-            handler.setState(AnimationState.rightWalkState);
-        }
-        else if(InputListener.up)
-        {
-            SetWalk(animator);
-            //control.setSpeed(3f);
-            handler.setState(AnimationState.forwardState);
+            if (InputListener.up && InputListener.left)
+            {
+                SetLeftWalk(animator);
+                handler.setState(AnimationState.leftWalkState);
+            }
+            else if (InputListener.up && InputListener.right)
+            {
+                SetRightWalk(animator);
+                handler.setState(AnimationState.rightWalkState);
+            }
+            else if (InputListener.up)
+            {
+                SetWalk(animator);
+                handler.setState(AnimationState.forwardState);
+            }
         }
     }
 }
@@ -140,26 +142,34 @@ public class ForwardState : AnimationState
     private float lastInStateTime=0;
     public override void handle(AnimationHandler handler, Animator animator, MovementControl control)
     {
-        Logger.log("forward");
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Forward"))
+        {
+            Logger.log("forward");
 
-        if(InputListener.up && InputListener.left)
-        {
-            SetLeftWalk(animator);
-            handler.setState(AnimationState.leftWalkState);
-        }
-        else if(InputListener.up)
-        {
-            if (canGoNextState(ref lastInStateTime))
+            if (InputListener.up && InputListener.left)
             {
-                SetRun(animator);
-                handler.setState(AnimationState.runState);
+                SetLeftWalk(animator);
+                handler.setState(AnimationState.leftWalkState);
             }
-        }
-        else
-        {
-            SetIdle(animator);
-            lastInStateTime = 0;
-            handler.setState(AnimationState.idelState);
+            else if (InputListener.up && InputListener.right)
+            {
+                SetRightWalk(animator);
+                handler.setState(AnimationState.rightWalkState);
+            }
+            else if (InputListener.up)
+            {
+                if (canGoNextState(ref lastInStateTime))
+                {
+                    SetRun(animator);
+                    handler.setState(AnimationState.runState);
+                }
+            }
+            else
+            {
+                SetIdle(animator);
+                lastInStateTime = 0;
+                handler.setState(AnimationState.idelState);
+            }
         }
     }
 }
@@ -168,22 +178,25 @@ public class RunState : AnimationState
 {
     public override void handle(AnimationHandler handler, Animator animator, MovementControl control)
     {
-        Logger.log("Run");
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Run"))
+        {
+            Logger.log("Run");
 
-        if(InputListener.up && InputListener.left)
-        {
-            SetLeftRun(animator);
-            handler.setState(AnimationState.leftRunState);
-        }
-        else if(InputListener.up && InputListener.right)
-        {
-            SetRightRun(animator);
-            handler.setState(AnimationState.rightRunState);
-        }
-        if(!InputListener.up)
-        {
-            SetIdle(animator);
-            handler.setState(AnimationState.idelState);
+            if (InputListener.up && InputListener.left)
+            {
+                SetLeftRun(animator);
+                handler.setState(AnimationState.leftRunState);
+            }
+            else if (InputListener.up && InputListener.right)
+            {
+                SetRightRun(animator);
+                handler.setState(AnimationState.rightRunState);
+            }
+            if (!InputListener.up)
+            {
+                SetIdle(animator);
+                handler.setState(AnimationState.idelState);
+            }
         }
     }
 }
@@ -194,31 +207,34 @@ public class LeftWalkState : AnimationState
 
     public override void handle(AnimationHandler handler, Animator animator, MovementControl control)
     {
-        Logger.log("LeftWalkState");
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("LeftWalk"))
+        {
+            Logger.log("LeftWalkState");
 
-        if(InputListener.up && InputListener.left)
-        {
-            if (canGoNextState(ref lastInStateTime))
+            if (InputListener.up && InputListener.left)
             {
-                SetLeftRun(animator);
-                handler.setState(AnimationState.leftRunState);
+                if (canGoNextState(ref lastInStateTime))
+                {
+                    SetLeftRun(animator);
+                    handler.setState(AnimationState.leftRunState);
+                }
             }
-        }
-        else if(InputListener.up && InputListener.right)
-        {
-            SetRightWalk(animator);
-            handler.setState(AnimationState.rightWalkState);
-        }
-        else if(InputListener.up)
-        {
-            SetWalk(animator);
-            handler.setState(AnimationState.forwardState);
-        }
-        else
-        {
-            SetIdle(animator);
-            lastInStateTime = 0;
-            handler.setState(AnimationState.idelState);
+            else if (InputListener.up && InputListener.right)
+            {
+                SetRightWalk(animator);
+                handler.setState(AnimationState.rightWalkState);
+            }
+            else if (InputListener.up)
+            {
+                SetWalk(animator);
+                handler.setState(AnimationState.forwardState);
+            }
+            else
+            {
+                SetIdle(animator);
+                lastInStateTime = 0;
+                handler.setState(AnimationState.idelState);
+            }
         }
     }
 }
@@ -227,27 +243,31 @@ public class LeftRunState : AnimationState
 {
     public override void handle(AnimationHandler handler, Animator animator, MovementControl control)
     {
-        Logger.log("LeftRunState");
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("LeftRun"))
+        {
+            Logger.log("LeftRunState");
 
-        if (InputListener.up && InputListener.left)
-        {
-            return;
+            if (InputListener.up && InputListener.left)
+            {
+                return;
+            }
+            else if (InputListener.up && InputListener.right)
+            {
+                SetRightRun(animator);
+                handler.setState(AnimationState.rightRunState);
+            }
+            else if (InputListener.up && !InputListener.left && !InputListener.right)
+            {
+                SetRun(animator);
+                handler.setState(AnimationState.runState);
+            }
+            else
+            {
+                SetIdle(animator);
+                handler.setState(AnimationState.idelState);
+            }
         }
-        else if (InputListener.up && InputListener.right)
-        {
-            SetRightRun(animator);
-            handler.setState(AnimationState.rightRunState);
-        }
-        else if(InputListener.up && !InputListener.left && !InputListener.right)
-        {
-            SetRun(animator);
-            handler.setState(AnimationState.runState);
-        }
-        else
-        {
-            SetIdle(animator);
-            handler.setState(AnimationState.idelState);
-        }
+
     }
 }
 
@@ -256,31 +276,34 @@ public class RightWalkState : AnimationState
     private float lastInStateTime = 0;
     public override void handle(AnimationHandler handler, Animator animator, MovementControl control)
     {
-        Logger.log("RightWalkState");
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("RightWalk"))
+        {
+            Logger.log("RightWalkState");
 
-        if (InputListener.up && InputListener.right)
-        {
-            if (canGoNextState(ref lastInStateTime))
+            if (InputListener.up && InputListener.right)
             {
-                SetRightRun(animator);
-                handler.setState(AnimationState.rightRunState);
+                if (canGoNextState(ref lastInStateTime))
+                {
+                    SetRightRun(animator);
+                    handler.setState(AnimationState.rightRunState);
+                }
             }
-        }
-        else if (InputListener.up && InputListener.left)
-        {
-            SetLeftWalk(animator);
-            handler.setState(AnimationState.leftWalkState);
-        }
-        else if (InputListener.up)
-        {
-            SetWalk(animator);
-            handler.setState(AnimationState.forwardState);
-        }
-        else
-        {
-            SetIdle(animator);
-            lastInStateTime = 0;
-            handler.setState(AnimationState.idelState);
+            else if (InputListener.up && InputListener.left)
+            {
+                SetLeftWalk(animator);
+                handler.setState(AnimationState.leftWalkState);
+            }
+            else if (InputListener.up)
+            {
+                SetWalk(animator);
+                handler.setState(AnimationState.forwardState);
+            }
+            else
+            {
+                SetIdle(animator);
+                lastInStateTime = 0;
+                handler.setState(AnimationState.idelState);
+            }
         }
     }
 }
@@ -289,26 +312,29 @@ public class RightRunState : AnimationState
 {
     public override void handle(AnimationHandler handler, Animator animator, MovementControl control)
     {
-        Logger.log("RightRunState");
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("RightRun"))
+        {
+            Logger.log("RightRunState");
 
-        if (InputListener.up && InputListener.right)
-        {
-            return;
-        }
-        else if (InputListener.up && InputListener.left)
-        {
-            SetLeftRun(animator);
-            handler.setState(AnimationState.leftRunState);
-        }
-        else if (InputListener.up && !InputListener.left && !InputListener.right)
-        {
-            SetRun(animator);
-            handler.setState(AnimationState.runState);
-        }
-        else
-        {
-            SetIdle(animator);
-            handler.setState(AnimationState.idelState);
+            if (InputListener.up && InputListener.right)
+            {
+                return;
+            }
+            else if (InputListener.up && InputListener.left)
+            {
+                SetLeftRun(animator);
+                handler.setState(AnimationState.leftRunState);
+            }
+            else if (InputListener.up && !InputListener.left && !InputListener.right)
+            {
+                SetRun(animator);
+                handler.setState(AnimationState.runState);
+            }
+            else
+            {
+                SetIdle(animator);
+                handler.setState(AnimationState.idelState);
+            }
         }
     }
 }
